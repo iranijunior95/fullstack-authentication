@@ -1,0 +1,114 @@
+📌 Requisitos do Projeto — fullstack-authentication
+
+🎯 Objetivo:
+
+Desenvolver uma aplicação full stack que permita cadastro e autenticação de usuários, garantindo segurança das senhas e controle de acesso a rotas protegidas.
+
+🧩 Requisitos Funcionais:
+
+RF01 — Cadastro de usuário
+
+O sistema deve permitir que um usuário crie uma conta informando:
+
+- nome
+- email
+- senha
+
+Regras:
+
+- o email deve ser único
+- a senha deve ser criptografada antes de salvar
+
+RF02 — Login de usuário
+
+O sistema deve permitir que um usuário faça login informando:
+
+- email
+- senha
+
+Regras:
+
+- validar email e senha
+- retornar erro caso credenciais sejam inválidas
+- gerar token de autenticação quando o login for válido
+
+RF03 — Criptografia de senha
+
+O sistema deve armazenar a senha do usuário utilizando criptografia para garantir segurança.
+
+Exemplo de biblioteca:
+
+- bcrypt
+
+RF04 — Geração de token de autenticação
+
+- Após o login válido, o sistema deve gerar um token JWT contendo informações do usuário autenticado.
+- Esse token será usado para acessar rotas protegidas.
+
+RF05 — Rota protegida
+
+O sistema deve possuir pelo menos uma rota protegida que:
+
+- só pode ser acessada com token válido
+- retorna dados do usuário logado
+
+Exemplo:
+
+GET /api/profile
+
+RF06 — Middleware de autenticação
+
+O backend deve possuir um middleware responsável por:
+
+- verificar o token JWT
+- permitir ou negar acesso às rotas protegidas
+
+RF07 — Logout
+
+O sistema deve permitir que o usuário faça logout removendo o token do armazenamento no frontend.
+
+🎨 Requisitos do Frontend
+
+RF08 — Tela de cadastro
+
+O frontend deve possuir uma página contendo:
+
+- campo nome
+- campo email
+- campo senha
+- botão de cadastro
+
+Essa tela deve enviar os dados para:
+
+POST /api/register
+
+RF09 — Tela de login
+
+O frontend deve possuir uma página contendo:
+
+- campo email
+- campo senha
+- botão de login
+
+Essa tela deve enviar os dados para:
+
+POST /api/login
+
+RF10 — Armazenamento do token
+
+Após login bem sucedido, o frontend deve salvar o token em:
+
+- localStorage ou sessionStorage
+
+RF11 — Página protegida
+
+O frontend deve possuir uma página chamada dashboard que:
+
+- só pode ser acessada se o usuário estiver autenticado
+- deve exibir informações do usuário logado
+
+⚙️ Requisitos Não Funcionais
+
+RNF01 — Segurança
+
+- As senhas nunca devem ser armazenadas em texto puro.
