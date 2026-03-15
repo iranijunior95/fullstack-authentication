@@ -1,3 +1,6 @@
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/environmentVariables.js";
+
 function validateUserData(req, res, next) {
     const { email, password } = req.body;
 
@@ -16,4 +19,26 @@ function validateUserData(req, res, next) {
     next();
 }
 
-export default { validateUserData }
+function validateAccessAuthentication(req, res, next) {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if(!token) {
+        return res.status(401).json({ message: "Token não localizado" });
+    }
+
+    try {
+        const decodedToken = jwt.verify(token, JWT_SECRET);
+        req.userData = decodedToken;
+        next();
+
+    } catch (error) {
+        console.log(`Erro na validação do token: ${error.message}`);
+
+        return res.status(401).json({ message: "Token inválido ou expirado. Faça login novamente." });
+    }    
+}
+
+export default { 
+    validateUserData,
+    validateAccessAuthentication 
+}

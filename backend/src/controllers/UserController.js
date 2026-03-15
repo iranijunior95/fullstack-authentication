@@ -1,5 +1,6 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 import { Users } from "../models/Users.js";
 import { SALTS_ROUNDS, JWT_SECRET } from "../config/environmentVariables.js";
 
@@ -55,6 +56,34 @@ async function registerUsers(req, res) {
     }
 }
 
+async function retrieveUserDataByID(req, res) {
+    const { id } = req.userData;
+
+    try {
+        const returnedUserData = await Users.findById(id).select("-password");
+
+        if(!returnedUserData) {
+            res.status(400).json({
+                message: "Dados do usuario não localizado",
+                user: null
+            });
+        }
+
+        return res.status(200).json({
+            message: "Dados do usuario localizado com sucesso",
+            user: returnedUserData
+        });
+
+    } catch (error) {
+        console.log(`Erro interno ao buscar dados do usuario: ${error.message}`);
+
+        return res.status(500).json({
+            message: `Erro interno ao buscar dados do usuario: ${error.message}`
+        });
+    }
+}
+
 export default {
-    registerUsers
+    registerUsers,
+    retrieveUserDataByID
 }
