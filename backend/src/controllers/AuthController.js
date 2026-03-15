@@ -1,0 +1,51 @@
+import validator from "validator";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { Users } from "../models/Users.js";
+import { JWT_SECRET } from "../config/environmentVariables.js";
+
+async function login(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        const locatedUser = await Users.findOne({ email, status: true });
+
+        if(!locatedUser) {
+            return res.status(401).json({
+                message: "Email ou senha incorretos"
+            });
+        }
+
+        const passwordValidated = await bcrypt.compare(password, locatedUser.password);
+
+        if(!passwordValidated) {
+            return res.status(401).json({
+                message: "Email ou senha incorretos"
+            });
+        }
+
+        const payload = {
+            id: locatedUser._id,
+            name: locatedUser.name,
+            email: locatedUser.email
+        };
+
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "60m" });
+
+        return res.status(200).json({
+            message: "Login realizado com sucesso",
+            token
+        });
+
+    } catch (error) {
+        console.log(`Erro interno ao realizar login: ${error.message}`);
+
+        return res.status(500).json({
+            message: `Erro interno ao realzar login: ${error.message}`
+        });
+    }
+}
+
+export default {
+    login
+}
