@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import router from "./src/routes/router.js";
 import { connectDatabase } from "./src/config/databaseConnection.js";
 import { PORT } from "./src/config/environmentVariables.js";
@@ -6,6 +7,7 @@ import { PORT } from "./src/config/environmentVariables.js";
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api", router);
 
 connectDatabase()

@@ -32,9 +32,15 @@ async function login(req, res) {
 
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "60m" });
 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 60 * 60 * 1000
+        });
+
         return res.status(200).json({
-            message: "Login realizado com sucesso",
-            token
+            message: "Login realizado com sucesso"
         });
 
     } catch (error) {
@@ -46,6 +52,15 @@ async function login(req, res) {
     }
 }
 
+function logout(req, res) {
+    res.clearCookie("token");
+
+    return res.status(200).json({
+        message: "Logout realizado com sucesso"
+    });
+}
+
 export default {
-    login
+    login,
+    logout
 }
