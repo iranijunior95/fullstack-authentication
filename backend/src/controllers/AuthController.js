@@ -30,12 +30,12 @@ async function login(req, res) {
             email: locatedUser.email
         };
 
-        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "60m" });
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "5m" });
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: false, // 👈 MUITO IMPORTANTE no dev
+            sameSite: "lax", // 👈 funciona entre portas diferentes
             maxAge: 60 * 60 * 1000
         });
 
@@ -53,7 +53,11 @@ async function login(req, res) {
 }
 
 function logout(req, res) {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    });
 
     return res.status(200).json({
         message: "Logout realizado com sucesso"

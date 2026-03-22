@@ -10,4 +10,9 @@ authRouter.post("/auth/register", UserMiddleware.validateUserData, UserControlle
 authRouter.post("/auth/login", AuthMiddleware.validateUserData, AuthController.login);
 authRouter.get("/auth/logout", AuthController.logout);
 
+//Rota para validar autenticação no frontend
+authRouter.get("/auth/me", AuthMiddleware.validateAccessAuthentication, (req, res) => {
+    return res.json(req.userData);
+});
+
 export default authRouter;
