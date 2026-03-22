@@ -41,9 +41,9 @@ export default function Login() {
             <h1 className="text-center">Login</h1>
 
             <div className="row w-100">
-                <div className="col-3"></div>
+                <div className="col"></div>
 
-                <div className="col-6">
+                <div className="col">
                     <form onSubmit={captureSubmit}>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email:</label>
@@ -74,7 +74,7 @@ export default function Login() {
                     </form>
                 </div>
 
-                <div className="col-3"></div>
+                <div className="col"></div>
             </div>
         </div>
     )

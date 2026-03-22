@@ -61,9 +61,9 @@ export default function Register() {
             <h1 className="text-center">Register</h1>
 
             <div className="row w-100">
-                <div className="col-3"></div>
+                <div className="col"></div>
 
-                <div className="col-6">
+                <div className="col">
                     <form onSubmit={captureSubmit}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">Name:</label>
@@ -118,7 +118,7 @@ export default function Register() {
                     </form>
                 </div>
 
-                <div className="col-3"></div>
+                <div className="col"></div>
             </div>
         </div>
     )
